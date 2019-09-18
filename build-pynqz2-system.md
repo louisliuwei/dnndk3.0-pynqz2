@@ -208,6 +208,7 @@ cd pynq-z2-dpu
 ```
 
 **Note:(Optional)** Use the following command to create a new Petalinux based on an existing BSP, then you can skip step 2 ~ 6.
+
 ```
 petalinux-create --type project --source ./prebuilts/pynq-z2-dpu.bsp --name pynq-z2-dpu
 cd pynq-z2-dpu
@@ -266,12 +267,12 @@ Image Packaging Configuration -> Root filesystem type (INITRAMFS) -> SD card
 
 ![Root filesystem type](./images/image5.png "Root filesystem type")
 
-disable
+disable the following configuration
 ```
 DTG Settings -> Kernel Bootargs -> generate boot args automatically
 ```
 
-and ehter the following bootargs in `user set kernel bootargs`
+and enter the following bootargs in `user set kernel bootargs`
 ```
 console=ttyPS0,115200 root=/dev/mmcblk0p2 rw earlyprintk quiet rootfstype=ext4 rootwait cma=256M
 ```
@@ -290,33 +291,37 @@ petalinux-config -c rootfs
 1. Enable each item listed below:
 
     **Filesystem Packages ->**
+    
       - console -> utils -> pkgconfig ->
         - pkgconfig
       - devel -> make ->
         - make
       - misc ->
         - packagegroup-core-buildessential ->
-          - packagegroup-core-buildessential
-
+      - packagegroup-core-buildessential
+   
    **Petalinux Package Groups ->**
+   
       - packagegroup-petalinux-opencv -> 
         - packagegroup-petalinux-opencv
         - packagegroup-petalinux-opencv-dev
       - packagegroup-petalinux-v4lutils ->  
         - packagegroup-petalinux-v4lutils
-      - packagegroup-petalinux-x11 ->
+   - packagegroup-petalinux-x11 ->
         - packagegroup-petalinux-x11
-
-    **Apps ->**
+   
+ **Apps ->**
       - autostart
-
+   
     **Modules ->**
+   
       - dpu
 
 
 2. Exit and save the changes.
 
 **Tip:** For system-user.dtsi in step 6 and 7, you can copy and paste the amba node from `<PROJ ROOT>/files/dpu.dtsi`.
+
 ## Step 6: Add DPU to the device tree
 
 At this time, the DPU is not supported by the device-tree generator. Therefore, we need to manually add a device-tree node to the DPU, based on our hardware settings.
